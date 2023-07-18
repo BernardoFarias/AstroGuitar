@@ -8,7 +8,6 @@ This is an e-commerce project developed using Astro, a modern front-end framewor
 - Product search: Allow users to search for specific products.
 - Product filtering: Provide options for users to filter products based on categories, price range, etc.
 - Shopping cart: Enable users to add products to a shopping cart and proceed to checkout.
-- User authentication: Allow users to create accounts, log in, and manage their profile information.
 - Order management: Provide functionality to manage orders, including order history and status tracking.
 
 ## Technologies Used
