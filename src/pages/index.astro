@@ -1,0 +1,60 @@
+---
+import Course from '../components/Course.astro';
+import Guitar from '../components/Guitar.astro';
+import Post from '../components/Post.astro';
+import Layout from '../layouts/Layout.astro';
+
+const urlGuitars = `${import.meta.env.PUBLIC_API_URL}/guitars?populate=image`
+const urlPosts = `${import.meta.env.PUBLIC_API_URL}/posts?populate=image`
+const urlCourse = `${import.meta.env.PUBLIC_API_URL}/course?populate=image`
+
+const [resGuitars, resPosts, resCourse] = await Promise.all([
+	fetch(urlGuitars),
+	fetch(urlPosts),
+	fetch(urlCourse)
+])
+
+const [{data: guitars}, {data: posts}, {data: course}] = await Promise.all([
+	resGuitars.json(),
+	resPosts.json(),
+	resCourse.json()
+])
+
+---
+
+<Layout title="Home" description="Discover a wide selection of guitars and musical instruments at our Astro-built e-commerce store. Shop top brands, explore detailed product descriptions, and find the perfect guitar for your musical journey. Explore our range of guitars today and unleash your musical creativity!">
+	<main class="contenedor">
+		<h1 class="heading">Where cosmic melodies come to life</h1>
+		<div class="grid">
+			{guitars?.slice(0, 6).map(guitar => 
+				<Guitar
+				name={guitar.attributes.name}
+				description={guitar.attributes.description}
+				url={guitar.attributes.url}
+				price={guitar.attributes.price}
+				image={guitar.attributes.image.data.attributes.formats.medium.url}
+				/>
+			)}
+		</div>
+	</main>
+	<Course
+		title={course.attributes.title}
+		content={course.attributes.content}
+		image={course.attributes.image.data.attributes.url}
+	/>
+	<section class="contenedor">
+		<h1 class="heading">Blog</h1>
+		<div class="grid">
+			{posts?.slice(0,3).map(post => (
+                <Post 
+                title= {post.attributes.title}
+                content={post.attributes.content}
+                url={post.attributes.url}
+                publishedAt={post.attributes.publishedAt}
+                image={post.attributes.image.data.attributes.formats.medium.url}
+                />
+				)
+			)}
+		</div>
+	</section>
+</Layout>

@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths(){
+    const url = `${import.meta.env.PUBLIC_API_URL}/guitars?populate=image`
+    const response = await fetch(url)
+    const {data} = await response.json()
+    return data.map(guitar => ({
+        params: {
+            id: guitar.attributes.url
+        },
+        props: {
+            guitar: guitar.attributes
+        }
+    }))
+}
+
+const { name , description, image, price } = Astro.props.guitar
+---
+<Layout title={name} description="Discover a wide selection of guitars and musical instruments at our Astro-built e-commerce store. Shop top brands, explore detailed product descriptions, and find the perfect guitar for your musical journey. Explore our range of guitars today and unleash your musical creativity!">
+    <main class="guitarra">
+        <img src={image.data.attributes.url} alt={`image guitar brand ${name}`}/>
+        <div class="contenido">
+            <h3>{name}</h3>
+            <p class="descripcion">{description}</p>
+            <p class="precio">$ {price}</p>
+            <form class="formulario">
+                <label for="quantity">Quantity:</label>
+                <select id="quantity">
+                    <option value="0">-- Select --</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+
+                </select>
+                <input 
+                type="submit"
+                value="Add to Cart"
+                />
+            </form>
+        </div>
+    </main>
+</Layout>
+
+<style>
+.guitarra {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 1rem;
+    align-items: center;
+    max-width: 70rem;
+    margin: 6rem auto;
+}
+.contenido {
+    padding: 1rem;
+}
+.contenido h3 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    color: var(--primary);
+}
+.descripcion {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-size: 1.8rem;
+}
+.precio {
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 3rem;
+    font-weight: 900;
+}
+.formulario {
+    margin-top: 4rem;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+.formulario label {
+    font-size: 2.2rem;
+}
+.formulario select {
+    border: 1px solid var(--black);
+    padding: 1rem;
+    text-align: center;
+    border-radius: 1rem;
+}
+.formulario input[type="submit"] {
+    display: block;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    padding: 1.4rem;
+    background-color: var(--black);
+    color: var(--white);
+    transition-property: background-color;
+    transition-duration: 300ms;
+}
+.formulario input[type="submit"]:hover {
+    background: linear-gradient(to left, var(--secondary), var(--primary));
+    cursor: pointer;
+}
+</style>

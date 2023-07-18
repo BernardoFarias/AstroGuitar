@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import about from "../img/about.jpg"
+---
+
+<Layout title="About" description="Discover a wide selection of guitars and musical instruments at our Astro-built e-commerce store. Shop top brands, explore detailed product descriptions, and find the perfect guitar for your musical journey. Explore our range of guitars today and unleash your musical creativity!">
+	<main class="contenedor">
+		<h1 class="heading">About me</h1>
+		<div class="contenido">
+			<img src={about} alt="Image about us"/>
+			<div>
+				<p>
+				I'm Bernardo Farias, an Argentinean software  developer with an accounting background. 
+				I am passionate about programming and my goal is continuously improving my 
+				front-end skills to provide the best user experience.
+				</p>
+				<p>
+				Explore the wonders of the universe with our carefully curated collection of high-quality 
+				guitars. Whether you're a beginner or an experienced musician, we have everything you 
+				need to fuel your cosmic curiosity.
+				</p>
+				<p>
+				Feel free to contact me or make any suggestion!
+				</p>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+.contenido {
+    display: grid;
+    gap: 4rem;
+}
+@media (min-width: 768px) {
+    .contenido {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+    }
+}
+</style>

@@ -1,0 +1,62 @@
+---
+import { formatDate } from '../../helpers';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths(){
+    const url = `${import.meta.env.PUBLIC_API_URL}/posts?populate=image`
+    const response = await fetch(url)
+    const {data} = await response.json()
+
+    return data.map(post => ({
+        params: {
+            id: post.attributes.url
+        },
+        props: {
+            post: post.attributes
+        }
+    }))
+
+}
+
+const { title, content, url, publishedAt, image} = Astro.props.post
+---
+
+<Layout title={"ASdasd"} description="Discover a wide selection of guitars and musical instruments at our Astro-built e-commerce store. Shop top brands, explore detailed product descriptions, and find the perfect guitar for your musical journey. Explore our range of guitars today and unleash your musical creativity!">
+    <main class="post">
+        <img src={image.data.attributes.url} alt={`Image post ${title}`} />
+        <div class="contenido">
+            <h3>{title}</h3>
+            <p class="fecha">{formatDate(publishedAt)}</p>
+            <p class="descripcion">{content}</p>
+        </div>
+    </main>
+</Layout>
+
+<style>
+.post {
+    max-width: 80rem;
+    margin: 3rem auto;
+}
+.contenido {
+    padding: 1rem;
+}
+.contenido h3 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 900;
+}
+.descripcion {
+    white-space: pre-wrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-size: 1.8rem;
+}
+.fecha {
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2rem;
+    font-weight: 700;
+}
+</style>
